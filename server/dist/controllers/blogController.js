@@ -1,10 +1,10 @@
 import blog from '../models/blog.js';
-import { Error } from 'mongoose';
+import mongoose, { Error } from 'mongoose';
 export const postBlog = async (req, res) => {
     console.log(req.body);
     try {
-        const { title, author, content } = req.body;
-        if (!title || !author || !content)
+        const { title, author, content, language } = req.body;
+        if (!title || !author || !content || !language)
             return res.json({
                 success: false,
                 message: 'All fields are required',
@@ -40,3 +40,33 @@ export const getAllBlog = async (req, res) => {
             });
     }
 };
+export const getSingleBlog = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.json({
+                success: false,
+                message: 'Invalid blog ID',
+            });
+        }
+        const data = await blog.findById(id);
+        if (!data) {
+            return res.json({
+                success: false,
+                message: 'Blog not found',
+            });
+        }
+        return res.json({
+            success: true,
+            data,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            message: 'Internal Server error',
+        });
+    }
+};
+export const deleteBlog = async (req, res) => { };

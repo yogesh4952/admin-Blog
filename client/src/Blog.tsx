@@ -15,11 +15,13 @@ const Blog = () => {
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const [language, setLanguage] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{
     title?: string;
     author?: string;
     content?: string;
+    language?: string;
   }>({});
 
   // Validation function
@@ -42,6 +44,14 @@ const Blog = () => {
       newErrors.author = 'Author name must be at least 3 characters';
     } else if (author.trim().length > 100) {
       newErrors.author = 'Author name must be less than 100 characters';
+    }
+
+    if (!language.trim()) {
+      newErrors.language = 'language is required';
+    } else if (language.trim().length < 3) {
+      newErrors.language = 'language name must be at least 3 characters';
+    } else if (language.trim().length > 100) {
+      newErrors.language = 'language name must be less than 100 characters';
     }
 
     // Content validation
@@ -116,7 +126,12 @@ const Blog = () => {
     }
 
     setLoading(true);
-    const data = { title: title.trim(), author: author.trim(), content: value };
+    const data = {
+      title: title.trim(),
+      author: author.trim(),
+      content: value,
+      language: language.trim(),
+    };
 
     try {
       const response = await axiosInstance.post('/post-blog', data);
@@ -127,6 +142,7 @@ const Blog = () => {
         setAuthor('');
         setValue('');
         setTitle('');
+        setLanguage('');
         setErrors({});
       } else {
         toast.error(response.data.message || 'Failed to post blog');
@@ -212,6 +228,40 @@ const Blog = () => {
                 <p className='text-red-500 text-sm mt-1'>{errors.author}</p>
               )}
               <p className='text-gray-500 text-xs mt-1'>{author.length}/100</p>
+            </div>
+
+            {/* Language */}
+
+            <div>
+              <label
+                htmlFor='language'
+                className='block text-sm font-medium text-gray-700 mb-2'
+              >
+                Language <span className='text-red-500'>*</span>
+              </label>
+              <input
+                type='text'
+                id='language'
+                maxLength={100}
+                value={language}
+                onChange={(e) => {
+                  setLanguage(e.target.value);
+                  if (errors.author)
+                    setErrors({ ...errors, language: undefined });
+                }}
+                className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition ${
+                  errors.language
+                    ? 'border-red-500 bg-red-50'
+                    : 'border-gray-300'
+                }`}
+                placeholder='Enter Language name...'
+              />
+              {errors.language && (
+                <p className='text-red-500 text-sm mt-1'>{errors.language}</p>
+              )}
+              <p className='text-gray-500 text-xs mt-1'>
+                {language.length}/100
+              </p>
             </div>
 
             {/* Markdown Editor */}

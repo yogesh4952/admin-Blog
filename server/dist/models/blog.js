@@ -8,6 +8,10 @@ const BlogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    language: {
+        type: String,
+        required: true,
+    },
     content: {
         type: String,
         required: true,
