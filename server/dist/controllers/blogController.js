@@ -1,4 +1,5 @@
 import blog from '../models/blog.js';
+import { Error } from 'mongoose';
 export const postBlog = async (req, res) => {
     console.log(req.body);
     try {
@@ -20,6 +21,22 @@ export const postBlog = async (req, res) => {
             return res.json({
                 success: false,
                 message: error.message,
+            });
+    }
+};
+export const getAllBlog = async (req, res) => {
+    try {
+        const data = await blog.find({});
+        return res.json({
+            success: true,
+            data,
+        });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            return res.json({
+                success: false,
+                message: error.message || 'Internal server error',
             });
     }
 };
