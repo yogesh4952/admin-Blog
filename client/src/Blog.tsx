@@ -1,20 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { EditorContext, useEditor } from '@tiptap/react';
-import { EditorContent } from '@tiptap/react';
-import { FloatingMenu, BubbleMenu } from '@tiptap/react/menus';
-
-import StarterKit from '@tiptap/starter-kit';
+import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import axiosInstance from './axiosInstance';
+import { toast } from 'react-toastify';
 const Blog = () => {
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
 
-  const editor = useEditor({
-    extensions: [StarterKit], // define your extension array
-    content: '<p>Hello World!</p>', // initial content
-  });
-
-  const providerValue = useMemo(() => ({ editor }), [editor]);
+  console.log(value);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -22,16 +16,15 @@ const Blog = () => {
     const data = { title, author, content: value };
 
     try {
-      // Replace with your actual API call
-      console.log('Submitting:', data);
-      // const response = await axiosInstance.post('/post-blog', data);
+      const response = await axiosInstance.post('/post-blog', data,);
 
-      // Reset after successful submission
-      setTitle('');
-      setAuthor('');
-      setValue('');
-
-      alert('Blog post submitted successfully!');
+      if (response.data.success) {
+        toast.success('Posted');
+        alert('Blog post submitted successfully!');
+        setAuthor('');
+        setValue('');
+        setTitle('');
+      }
     } catch (error) {
       console.error('Error submitting post:', error);
       alert('Error submitting post');
@@ -90,16 +83,8 @@ const Blog = () => {
               <label className='block text-sm font-medium text-gray-700 mb-2'>
                 Content
               </label>
-              <div className='border border-gray-300 rounded-md overflow-hidden [&_.CodeMirror]:min-h-[300px] [&_.CodeMirror]:text-base [&_.CodeMirror]:font-mono [&_.CodeMirror-scroll]:min-h-[300px]'>
-                <EditorContext.Provider value={providerValue}>
-                  <EditorContent editor={editor} />
-                  <FloatingMenu editor={editor}>
-                    This is the floating menu
-                  </FloatingMenu>
-                  <BubbleMenu editor={editor}>
-                    This is the bubble menu
-                  </BubbleMenu>
-                </EditorContext.Provider>
+              <div className='border border-gray-300 rounded-md'>
+                <ReactQuill theme='snow' value={value} onChange={setValue} />;
               </div>
             </div>
 

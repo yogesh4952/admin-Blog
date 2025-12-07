@@ -15,11 +15,15 @@
     "@types/express": "^5.0.6",
     "@types/node": "^24.10.1",
     "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
     "nodemon": "^3.1.11",
     "react-toastify": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19"
   }
 }
