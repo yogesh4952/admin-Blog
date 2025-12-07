@@ -16,4 +16,3 @@ connectDb();
 app.listen(port, () => {
     console.log('Server started');
 });
-//# sourceMappingURL=index.js.map

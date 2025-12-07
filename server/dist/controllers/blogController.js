@@ -23,4 +23,3 @@ export const postBlog = async (req, res) => {
             });
     }
 };
-//# sourceMappingURL=blogController.js.map

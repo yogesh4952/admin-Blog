@@ -15,4 +15,3 @@ const BlogSchema = new mongoose.Schema({
 }, { timestamps: true });
 const blog = mongoose.model('blog', BlogSchema);
 export default blog;
-//# sourceMappingURL=blog.js.map
