@@ -4,11 +4,13 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
+    "prebuild": "npm ci --legacy-peer-deps || npm install",
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\""
   },
   "dependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^24.10.1",
     "concurrently": "^9.2.1",
@@ -17,10 +19,8 @@
     "express": "^5.2.1",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
-    "nodemon": "^3.1.11"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
+    "nodemon": "^3.1.11",
     "typescript": "^5.3.3"
-  }
+  },
+  "devDependencies": {}
 }

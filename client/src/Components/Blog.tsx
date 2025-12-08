@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../axiosInstance';
 import { toast } from 'react-toastify';
 
 // Register highlight.js with Quill
@@ -23,6 +24,8 @@ const Blog = () => {
     content?: string;
     language?: string;
   }>({});
+
+  const navigate = useNavigate();
 
   // Validation function
   const validateInputs = () => {
@@ -68,7 +71,6 @@ const Blog = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Configure Quill modules with highlight.js
   const modules = React.useMemo(
     () => ({
       toolbar: [
@@ -113,8 +115,6 @@ const Blog = () => {
     'image',
     'video',
   ];
-
-  console.log(value);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -237,7 +237,7 @@ const Blog = () => {
                 htmlFor='language'
                 className='block text-sm font-medium text-gray-700 mb-2'
               >
-                Language <span className='text-red-500'>*</span>
+                Language
               </label>
               <input
                 type='text'
@@ -316,6 +316,15 @@ const Blog = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className='m-auto'>
+        <button
+          className='cursor-pointer border border-white px-4 py-2 '
+          onClick={() => navigate('/manage-post')}
+        >
+          Manage Blogs
+        </button>
       </div>
     </div>
   );
